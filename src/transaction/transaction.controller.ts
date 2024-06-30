@@ -28,6 +28,13 @@ export class TransactionController {
     return this.transactionService.create(createTransactionDto, +req.user.id);
   }
 
+  //type - income | expense
+  @Get(':type/find')
+  @UseGuards(JwtAuthGuard)
+  findAllByType(@Req() req, @Param('type') type: string) {
+    return this.transactionService.findAllByType(+req.user.id, type)
+  }
+
   @Get('pagination')
   @UseGuards(JwtAuthGuard)
   findAllWithPagination(@Req() req,
@@ -42,6 +49,7 @@ export class TransactionController {
     return this.transactionService.findAll(+req.user.id);
   }
 
+  //type - transaction | category
   @Get(':type/:id')
   @UseGuards(JwtAuthGuard, AuthorGuard)
   findOne(@Param('id') id: string) {
