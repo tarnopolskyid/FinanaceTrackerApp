@@ -9,7 +9,8 @@ import { User } from '../user/entities/user.entity'
 @Injectable()
 export class TransactionService {
 
-  constructor(@InjectRepository(Transaction) private readonly transactionRepository: Repository<Transaction>) {
+  constructor(@InjectRepository(Transaction)
+              private readonly transactionRepository: Repository<Transaction>) {
   }
 
   async create(createTransactionDto: CreateTransactionDto, id: number) {
