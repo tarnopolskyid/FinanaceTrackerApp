@@ -18,6 +18,7 @@ export class TransactionService {
       title: createTransactionDto.title,
       amount: createTransactionDto.amount,
       type: createTransactionDto.type,
+      comment: createTransactionDto.comment,
       category: { id: +createTransactionDto.category },
       user: { id } as User
     }
