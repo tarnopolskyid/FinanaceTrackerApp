@@ -17,7 +17,6 @@ export class CreateTransactionDto {
   @IsString()
   comment: string;
 
-  @IsNotEmpty()
   category: Category
 
   user: User

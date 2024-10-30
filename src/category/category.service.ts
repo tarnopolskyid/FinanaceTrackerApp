@@ -4,13 +4,16 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Repository } from 'typeorm'
 import { Category } from './entities/category.entity'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Transaction } from '../transaction/entities/transaction.entity'
 
 @Injectable()
 export class CategoryService {
 
   constructor(
     @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>
+    private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Transaction)
+    private readonly transactionRepository: Repository<Transaction>
   ) {
   }
 
@@ -73,7 +76,14 @@ export class CategoryService {
   async remove(id: number) {
     const category = await this.categoryRepository.findOne({
       where: { id },
+      relations: {
+        transactions: true
+      }
     })
+    if (category && category.transactions.length > 0) {
+      // Například můžete nastavit category na null nebo jinou kategorii
+      await this.transactionRepository.update({ category: category }, { category: null });
+    }
     if (!category) throw new NotFoundException('Category not found!')
     return await this.categoryRepository.delete(id);
   }
