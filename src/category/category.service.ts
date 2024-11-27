@@ -21,14 +21,14 @@ export class CategoryService {
     // existuje-li v db kategorie ze stejnym jmenem u stejneho uzivatele
     const exist = await this.categoryRepository.findBy({
       user: { id },
-      title: createCategoryDto.title
+      title: createCategoryDto.title.toLowerCase()
     })
 
     if (exist.length)
-      throw new BadRequestException('This category already exist!')
+      throw new BadRequestException('This category already exist')
 
     const newCategory = {
-      title: createCategoryDto.title,
+      title: createCategoryDto.title.toLowerCase(),
       user: {
         id
       }
@@ -56,7 +56,7 @@ export class CategoryService {
         transactions: true
       }
     })
-    if (!category) throw new NotFoundException('Category not found!')
+    if (!category) throw new NotFoundException('Category not found')
     return category;
   }
 
@@ -68,7 +68,7 @@ export class CategoryService {
         transactions: true
       }
     })
-    if (!category) throw new NotFoundException('Category not found!')
+    if (!category) throw new NotFoundException('Category not found')
 
     return await this.categoryRepository.update(id, updateCategoryDto);
   }
@@ -84,7 +84,7 @@ export class CategoryService {
       // Například můžete nastavit category na null nebo jinou kategorii
       await this.transactionRepository.update({ category: category }, { category: null });
     }
-    if (!category) throw new NotFoundException('Category not found!')
+    if (!category) throw new NotFoundException('Category not found')
     return await this.categoryRepository.delete(id);
   }
 }

@@ -13,7 +13,13 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.findOne(email)
+
+    if (!user){
+      throw new UnauthorizedException('Incorrect email or password. Please try again.');
+    }
+
     const correctPassword = await argon2.verify(user?.password, password)
+
     if (user && correctPassword) {
       return user
     }
