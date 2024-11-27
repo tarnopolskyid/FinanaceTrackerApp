@@ -15,20 +15,17 @@ import {TypeOrmModule} from "@nestjs/typeorm";
         AuthModule,
         TransactionModule,
         ConfigModule.forRoot({isGlobal: true}),
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService) => ({
-                type: 'postgres',
-                host: process.env.DB_HOST,
-                port: parseInt(process.env.DB_PORT, 10),
-                username: process.env.DB_USERNAME,
-                password: process.env.DB_PASSWORD,
-                database: process.env.DB_NAME,
-                autoLoadEntities: true,
-                synchronize: true,
-                entities: [__dirname + '/**/*.entity{.js, .ts}']
-            }),
-            inject: [ConfigService]
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            url: process.env.DATABASE_URL, // Získám z Railway
+
+            // host: configService.get('DB_HOST'),
+            // port: configService.get('DB_PORT'),
+            // username: configService.get('DB_USERNAME'),
+            // password: configService.get('DB_PASSWORD'),
+            // database: configService.get('DB_NAME'),
+            synchronize: true,
+            entities: [__dirname + '/**/*.entity{.js, .ts}']
         })
     ],
     controllers: [AppController],
