@@ -7,6 +7,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   // enable Cross-Origin Resource Sharing
   app.enableCors();
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
