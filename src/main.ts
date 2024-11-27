@@ -6,7 +6,12 @@ async function bootstrap() {
   // set global prefix for all routes - http://localhost:3000/api
   app.setGlobalPrefix('api');
   // enable Cross-Origin Resource Sharing
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:4200'], // Povolení frontendové aplikace běžící na localhostu
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Authorization'], // Přidejte hlavičky, které potřebujete
+    credentials: true, // Pokud potřebujete posílat cookies nebo jiná pověření
+  });
   await app.listen(3000);
 }
 bootstrap();
