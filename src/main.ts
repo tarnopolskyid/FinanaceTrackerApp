@@ -7,7 +7,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   // enable Cross-Origin Resource Sharing
   app.enableCors({
-    origin: ['http://localhost:4200'], // Povolení frontendové aplikace běžící na localhostu
+    origin: '*', // Povolení frontendové aplikace běžící na localhostu
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization'], // Přidejte hlavičky, které potřebujete
     credentials: true, // Pokud potřebujete posílat cookies nebo jiná pověření
