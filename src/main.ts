@@ -1,16 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as serverless from 'serverless-http';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-  // Nastavení CORS
-  app.enableCors({
-    origin: 'https://finanace-tracker-app-frontend.vercel.app', // Povolit požadavky z této domény
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Povolené HTTP metody
-    allowedHeaders: ['Content-Type', 'Authorization'], // Povolené hlavičky
-    credentials: true, // Pokud chcete povolit cookies nebo jiné credentials
-  });
-  await app.listen(3000);
+
+  // Získání instance Express pro serverless-http
+  const expressApp = app.getHttpAdapter().getInstance();
+
+  // Obalit Express aplikaci pomocí serverless-http
+  const handler = serverless(expressApp);
+
+  // Exportovat handler pro serverless prostředí
+  exports.handler = async (event: Request, context: Response) => {
+    return handler(event, context);
+  };
 }
 bootstrap();
