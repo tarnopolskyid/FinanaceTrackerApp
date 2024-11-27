@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { environments } from 'eslint-plugin-prettier'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtStrategy } from './strategies/jwt.strategy'
+import * as process from 'node:process'
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { JwtStrategy } from './strategies/jwt.strategy'
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRET'),
+        secret: process.env.JWT_SECRET,
         signOptions: {expiresIn: '30d'}
       }),
       inject: [ConfigService]
